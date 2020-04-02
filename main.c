@@ -1,13 +1,13 @@
 ﻿/*******************************************************************************
 * File Name:   main.c
 *
-* Description: This is the source code for the TCPWM Square Wave code example
+* Description: This is the source code for the PWM Square Wave code example
 *              for ModusToolbox.
 *
 * Related Document: See README.md
 *
 *******************************************************************************
-* (c) 2019, Cypress Semiconductor Corporation. All rights reserved.
+* (c) 2019-2020, Cypress Semiconductor Corporation. All rights reserved.
 *******************************************************************************
 * This software, including source code, documentation and related materials
 * ("Software"), is owned by Cypress Semiconductor Corporation or one of its
@@ -56,8 +56,8 @@
 * Function Name: main
 ********************************************************************************
 * Summary:
-* This is the main function for CM4 CPU. It configures the TCPWM block to
-* operate as a PWM and puts the CPU in Sleep mode to save power.
+* This is the main function for the CPU. It configures the PWM and puts the CPU
+* in Sleep mode to save power.
 *
 * Parameters:
 *  void
@@ -75,7 +75,7 @@ int main(void)
 
     /* Initialize the device and board peripherals */
     result = cybsp_init();
-    if (result != CY_RSLT_SUCCESS)
+    if (CY_RSLT_SUCCESS != result)
     {
         /* Halt the CPU while debugging */
         CY_ASSERT(false);
@@ -84,34 +84,33 @@ int main(void)
     /* Enable global interrupts */
     __enable_irq();
 
-    /* Configure the TCPWM resource for PWM operation.
-    In this example, PWM output is routed to the user LED on the kit.
-    See PSoC 6 HAL API Reference document for API details. */
+    /* In this example, PWM output is routed to the user LED on the kit.
+       See HAL API Reference document for API details. */
 
-    /* Initialize the TCPWM resource for PWM operation */
-    result = cyhal_pwm_init(&pwm_led_control, (cyhal_gpio_t)CYBSP_USER_LED, NULL);
-    if(result != CY_RSLT_SUCCESS)
+    /* Initialize the PWM */
+    result = cyhal_pwm_init(&pwm_led_control, CYBSP_USER_LED, NULL);
+    if(CY_RSLT_SUCCESS != result)
     {
         CY_ASSERT(false);
     }
     /* Set the PWM output frequency and duty cycle */
     result = cyhal_pwm_set_duty_cycle(&pwm_led_control, PWM_DUTY_CYCLE, PWM_FREQUENCY);
-    if(result != CY_RSLT_SUCCESS)
+    if(CY_RSLT_SUCCESS != result)
     {
         CY_ASSERT(false);
     }
     /* Start the PWM */
     result = cyhal_pwm_start(&pwm_led_control);
-    if(result != CY_RSLT_SUCCESS)
+    if(CY_RSLT_SUCCESS != result)
     {
         CY_ASSERT(false);
     }
 
     /* Loop infinitely */
-    for(;;)
+    for (;;)
     {
         /* Put the CPU into Sleep mode to save power */
-        while(cyhal_system_sleep() != CY_RSLT_SUCCESS);
+        cyhal_system_sleep();
     }
 }
 
