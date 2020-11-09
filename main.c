@@ -41,6 +41,7 @@
 
 #include "cybsp.h"
 #include "cyhal.h"
+#include "cy_retarget_io.h"
 
 
 /*******************************************************************************
@@ -84,6 +85,18 @@ int main(void)
     /* Enable global interrupts */
     __enable_irq();
 
+    /* Initialize the retarget-io to use the debug UART port */
+    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
+    if (CY_RSLT_SUCCESS != result)
+    {
+        /* Halt the CPU while debugging */
+        CY_ASSERT(false);
+    }
+
+    /* \x1b[2J\x1b[;H - ANSI ESC sequence for clear screen */
+    printf("\x1b[2J\x1b[;H");
+    printf("****************** PSoC 6 MCU: PWM Square Wave ******************\r\n\n");
+
     /* In this example, PWM output is routed to the user LED on the kit.
        See HAL API Reference document for API details. */
 
@@ -91,25 +104,30 @@ int main(void)
     result = cyhal_pwm_init(&pwm_led_control, CYBSP_USER_LED, NULL);
     if(CY_RSLT_SUCCESS != result)
     {
+        printf("API cyhal_pwm_init failed with error code: %lu\r\n", (unsigned long) result);
         CY_ASSERT(false);
     }
     /* Set the PWM output frequency and duty cycle */
     result = cyhal_pwm_set_duty_cycle(&pwm_led_control, PWM_DUTY_CYCLE, PWM_FREQUENCY);
     if(CY_RSLT_SUCCESS != result)
     {
+        printf("API cyhal_pwm_set_duty_cycle failed with error code: %lu\r\n", (unsigned long) result);
         CY_ASSERT(false);
     }
     /* Start the PWM */
     result = cyhal_pwm_start(&pwm_led_control);
     if(CY_RSLT_SUCCESS != result)
     {
+        printf("API cyhal_pwm_start failed with error code: %lu\r\n", (unsigned long) result);
         CY_ASSERT(false);
     }
+
+    printf("PWM started successfully. Entering the sleep mode...\r\n");
 
     /* Loop infinitely */
     for (;;)
     {
-        /* Put the CPU into Sleep mode to save power */
+        /* Put the CPU into sleep mode to save power */
         cyhal_system_sleep();
     }
 }
