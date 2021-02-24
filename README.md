@@ -2,7 +2,7 @@
 
 This code example generates a square wave using the PWM driver. An LED connected to the PWM output pin blinks at 2 Hz.
 
-[Provide feedback on this Code Example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMjAyOTEiLCJTcGVjIE51bWJlciI6IjAwMi0yMDI5MSIsIkRvYyBUaXRsZSI6IlBTb0MgNiBNQ1U6IFBXTSBTcXVhcmUgV2F2ZSIsInJpZCI6InNyZHMiLCJEb2MgdmVyc2lvbiI6IjIuMC4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
+[Provide feedback on this Code Example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMjAyOTEiLCJTcGVjIE51bWJlciI6IjAwMi0yMDI5MSIsIkRvYyBUaXRsZSI6IlBTb0MgNiBNQ1U6IFBXTSBTcXVhcmUgV2F2ZSIsInJpZCI6InNyZHMiLCJEb2MgdmVyc2lvbiI6IjIuMS4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
 
 ## Requirements
 
@@ -30,7 +30,8 @@ This code example generates a square wave using the PWM driver. An LED connected
 - [PSoC 62S1 Wi-Fi BT Pioneer Kit](https://www.cypress.com/CYW9P62S1-43012EVB-01) (`CYW9P62S1-43012EVB-01`)
 - [PSoC 62S3 Wi-Fi BT Prototyping Kit](https://www.cypress.com/CY8CPROTO-062S3-4343W) (`CY8CPROTO-062S3-4343W`)
 - [PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit](http://www.cypress.com/CY8CKIT-064B0S2-4343W) (`CY8CKIT-064B0S2-4343W`)
-- [PSoC 64 Secure Boot Prototyping Kit](http://www.cypress.com/CY8CPROTO-064B0S3) (`CY8CPROTO-064B0S3`)
+- Rapid IoT Connect Platform RP01 Feather Kit (`CYSBSYSKIT-01`)
+- Rapid IoT Connect Developer Kit (`CYSBSYSKIT-DEV-01`)
 
 ## Hardware Setup
 
@@ -98,7 +99,7 @@ Various CLI tools include a `-h` option that prints help information to the term
 
 ## Operation
 
-If using a PSoC 64 Secure MCU kit (like CY8CKIT-064B0S2-4343W, CY8CPROTO-064B0S3), the PSoC 64 Secure MCU must be provisioned with keys and policies before being programmed. Follow the instructions in the [Secure Boot SDK User Guide](https://www.cypress.com/documentation/software-and-drivers/psoc-64-secure-mcu-secure-boot-sdk-user-guide) to provision the device. If the kit is already provisioned, copy-paste the keys and policy folder to the application folder.
+If using a PSoC 64 Secure MCU kit (like CY8CKIT-064B0S2-4343W), the PSoC 64 Secure MCU must be provisioned with keys and policies before being programmed. Follow the instructions in the [Secure Boot SDK User Guide](https://www.cypress.com/documentation/software-and-drivers/psoc-64-secure-mcu-secure-boot-sdk-user-guide) to provision the device. If the kit is already provisioned, copy-paste the keys and policy folder to the application folder.
 
 1. Connect the board to your PC using the provided USB cable through the KitProg3 USB connector.
 
@@ -169,11 +170,12 @@ The application uses the UART to print messages on the UART terminal. The UART r
 | [CY8CPROTO-063-BLE](https://www.cypress.com/CY8CPROTO-063-BLE) PSoC 6 BLE Prototyping Kit | [CY8CPROTO-062-4343W](https://www.cypress.com/CY8CPROTO-062-4343W) PSoC 6 Wi-Fi BT Prototyping Kit |
 | [CY8CKIT-062S2-43012](https://www.cypress.com/CY8CKIT-062S2-43012) PSoC 62S2 Wi-Fi BT Pioneer Kit | [CY8CPROTO-062S3-4343W](https://www.cypress.com/CY8CPROTO-062S3-4343W) PSoC 62S3 Wi-Fi BT Prototyping Kit |
 | [CYW9P62S1-43438EVB-01](https://www.cypress.com/CYW9P62S1-43438EVB-01) PSoC 62S1 Wi-Fi BT Pioneer Kit | [CYW9P62S1-43012EVB-01](https://www.cypress.com/CYW9P62S1-43012EVB-01) PSoC 62S1 Wi-Fi BT Pioneer Kit |
-| [CY8CKIT-064B0S2-4343W](http://www.cypress.com/CY8CKIT-064B0S2-4343W) PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit | [CY8CPROTO-064B0S3](http://www.cypress.com/CY8CPROTO-064B0S3) PSoC 64 Secure Boot Prototyping Kit |
+| [CY8CKIT-064B0S2-4343W](http://www.cypress.com/CY8CKIT-064B0S2-4343W) PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit | CYSBSYSKIT-01 Rapid IoT Connect Platform RP01 Feather Kit |
+| CYSBSYSKIT-DEV-01 Rapid IoT Connect Developer Kit |
 | **Libraries**                                                |                                                              |
 | PSoC 6 Peripheral Driver Library (PDL) and docs  | [mtb-pdl-cat1](https://github.com/cypresssemiconductorco/mtb-pdl-cat1) on GitHub |
 | Cypress Hardware Abstraction Layer (HAL) Library and docs    | [mtb-hal-cat1](https://github.com/cypresssemiconductorco/mtb-hal-cat1) on GitHub |
-| Retarget-IO - A utility library to retarget the standard input/output (STDIO) messages to a UART port | [retarget-io](https://github.com/cypresssemiconductorco/retarget-io) on GitHub |
+| Retarget IO - A utility library to retarget the standard input/output (STDIO) messages to a UART port | [retarget-io](https://github.com/cypresssemiconductorco/retarget-io) on GitHub |
 | **Middleware**                                               |                                                              |
 | CapSense® library and docs                                   | [capsense](https://github.com/cypresssemiconductorco/capsense) on GitHub |
 | Links to all PSoC 6 MCU Middleware                           | [psoc6-middleware](https://github.com/cypresssemiconductorco/psoc6-middleware) on GitHub |
@@ -196,7 +198,7 @@ Document Title: *CE220291* - *PSoC 6 MCU: PWM Square Wave*
 | 1.0.0   | New code example      |
 | 1.1.0   | Updated to support ModusToolbox software v2.1 and new kits |
 | 2.0.0   | Major update to support ModusToolbox software v2.2, added support for new kits<br /> This version is not backward compatible with ModusToolbox software v2.1 |
-
+| 2.1.0   | Added support for new kits |
 ------
 
 All other trademarks or registered trademarks referenced herein are the property of their respective owners.
