@@ -48,7 +48,7 @@ TARGET=CY8CPROTO-062-4343W
 #
 # If APPNAME is edited, ensure to update or regenerate launch
 # configurations for your IDE.
-APPNAME=mtb-example-psoc6-pwm-square-wave
+APPNAME=mtb-example-hal-pwm-square-wave
 
 # Name of toolchain to use. Options include:
 #

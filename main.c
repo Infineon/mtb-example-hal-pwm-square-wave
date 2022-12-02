@@ -1,12 +1,12 @@
 /*******************************************************************************
 * File Name:   main.c
 *
-* Description: This is the source code for the PWM Square Wave code example
+* Description: This is the source code for the PWM square wave code example
 *              for ModusToolbox.
 *
 * Related Document: See README.md
 *
-*******************************************************************************
+********************************************************************************
 * Copyright 2019-2022, Cypress Semiconductor Corporation (an Infineon company) or
 * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
 *
@@ -39,10 +39,13 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-
+/*******************************************************************************
+* Header Files
+*******************************************************************************/
 #include "cybsp.h"
 #include "cyhal.h"
 #include "cy_retarget_io.h"
+#include <inttypes.h>
 
 
 /*******************************************************************************
@@ -52,6 +55,71 @@
 #define PWM_FREQUENCY (2u)
 /* PWM Duty-cycle = 50% */
 #define PWM_DUTY_CYCLE (50.0f)
+
+
+/*******************************************************************************
+* Global Variables
+*******************************************************************************/
+
+
+/*******************************************************************************
+* Function Prototypes
+*******************************************************************************/
+
+
+/*******************************************************************************
+* Function Definitions
+*******************************************************************************/
+
+/*******************************************************************************
+* Function Name: handle_error
+********************************************************************************
+* Summary:
+*  User defined error handling function.
+*
+* Parameters:
+*  status - status for evaluation.
+*
+* Return:
+*  void
+*
+*******************************************************************************/
+void handle_error(cy_rslt_t status)
+{
+    if (CY_RSLT_SUCCESS != status)
+    {
+        /* Halt the CPU while debugging */
+        CY_ASSERT(0);
+    }
+}
+
+
+/*******************************************************************************
+* Function Name: check_status
+********************************************************************************
+* Summary:
+*  Prints the message and waits forever when an error occurs.
+*
+* Parameters:
+*  message - message to print if status is non-zero.
+*  status - status for evaluation.
+*
+* Return:
+*  void
+*
+*******************************************************************************/
+void check_status(char *message, cy_rslt_t status)
+{
+    if (CY_RSLT_SUCCESS != status)
+    {
+        printf("\r\n=====================================================\r\n");
+        printf("\nFAIL: %s\r\n", message);
+        printf("Error Code: 0x%08" PRIX32 "\n", status);
+        printf("\r\n=====================================================\r\n");
+
+        while(true);
+    }
+}
 
 
 /*******************************************************************************
@@ -75,7 +143,7 @@ int main(void)
     /* API return code */
     cy_rslt_t result;
 
-#if defined (CY_DEVICE_SECURE)
+#if defined(CY_DEVICE_SECURE)
     cyhal_wdt_t wdt_obj;
     /* Clear watchdog timer so that it doesn't trigger a reset */
     result = cyhal_wdt_init(&wdt_obj, cyhal_wdt_get_max_timeout_ms());
@@ -85,55 +153,40 @@ int main(void)
 
     /* Initialize the device and board peripherals */
     result = cybsp_init();
-    if (CY_RSLT_SUCCESS != result)
-    {
-        /* Halt the CPU while debugging */
-        CY_ASSERT(false);
-    }
+    handle_error(result);
 
     /* Enable global interrupts */
     __enable_irq();
 
     /* Initialize the retarget-io to use the debug UART port */
-    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
-    if (CY_RSLT_SUCCESS != result)
-    {
-        /* Halt the CPU while debugging */
-        CY_ASSERT(false);
-    }
+    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,
+                                 CY_RETARGET_IO_BAUDRATE);
+    handle_error(result);
 
     /* \x1b[2J\x1b[;H - ANSI ESC sequence for clear screen */
     printf("\x1b[2J\x1b[;H");
-    printf("****************** HAL Code: PWM Square Wave ******************\r\n\n");
+    printf("****************** "
+           "HAL: PWM square wave "
+           "****************** \r\n\n");
 
     /* In this example, PWM output is routed to the user LED on the kit.
        See HAL API Reference document for API details. */
 
     /* Initialize the PWM */
     result = cyhal_pwm_init(&pwm_led_control, CYBSP_USER_LED, NULL);
-    if(CY_RSLT_SUCCESS != result)
-    {
-        printf("API cyhal_pwm_init failed with error code: %lu\r\n", (unsigned long) result);
-        CY_ASSERT(false);
-    }
+    check_status("API cyhal_pwm_init failed with error code", result);
+
     /* Set the PWM output frequency and duty cycle */
-    result = cyhal_pwm_set_duty_cycle(&pwm_led_control, PWM_DUTY_CYCLE, PWM_FREQUENCY);
-    if(CY_RSLT_SUCCESS != result)
-    {
-        printf("API cyhal_pwm_set_duty_cycle failed with error code: %lu\r\n", (unsigned long) result);
-        CY_ASSERT(false);
-    }
+    result = cyhal_pwm_set_duty_cycle(&pwm_led_control, PWM_DUTY_CYCLE,
+                                      PWM_FREQUENCY);
+    check_status("API cyhal_pwm_set_duty_cycle failed with error code", result);
+
     /* Start the PWM */
     result = cyhal_pwm_start(&pwm_led_control);
-    if(CY_RSLT_SUCCESS != result)
-    {
-        printf("API cyhal_pwm_start failed with error code: %lu\r\n", (unsigned long) result);
-        CY_ASSERT(false);
-    }
+    check_status("API cyhal_pwm_start failed with error code", result);
 
     printf("PWM started successfully. Entering the sleep mode...\r\n");
 
-    /* Loop infinitely */
     for (;;)
     {
         /* Put the CPU into sleep mode to save power */
